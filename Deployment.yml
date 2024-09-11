@@ -1,0 +1,20 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+   name: MyService
+spec:
+   replicas: 2
+   selector:      # tells the controller which pods to watch/belong to
+    matchLabels:
+     app: MyService
+   template:
+      metadata:
+        labels:
+          app: MyService
+      spec:
+       containers:
+        - name: c01
+          image: ujjwaljagtiani/project-cicd
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 80
