@@ -38,7 +38,19 @@ pipeline {
         }
       }
 
-      
+      stage('Push Docker Image to DockerHub') {
+        steps {
+          sshagent(['ansible']) {
+            withCredentials([string(CredentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]) {
+              sh "docker login -u ujjwaljagtiani -p ${dockerhub_passwd}"
+              sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image push ujjwaljagtiani/$JOB_NAME:v1.$BUILD_ID '
+              sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image push ujjwaljagtiani/$JOB_NAME:v1.$BUILD_ID '
+            }
+            
+            
+          }
+        }
+      }
       
     }
   }
