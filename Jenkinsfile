@@ -42,13 +42,29 @@ pipeline {
         steps {
           sshagent(['ansible']) {
             withCredentials([string(CredentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]) {
-              sh "docker login -u ujjwaljagtiani -p ${dockerhub_passwd}"
+              sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker login -u ujjwaljagtiani -p ${dockerhub_passwd}"
               sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image push ujjwaljagtiani/$JOB_NAME:v1.$BUILD_ID '
               sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image push ujjwaljagtiani/$JOB_NAME:v1.$BUILD_ID '
             }
-            
-            
           }
+        }
+      }
+
+      stage('Copy files from Ansible to Kubernetes') {
+        steps {
+          sshagent(['MyApp(K8s)']) {
+              sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89'
+              sh 'scp /var/lib/jenkins/workspace/Project-CICD/* ubuntu@172.31.1.158:/home/ubuntu'
+            }
+        }
+      }
+
+      stage('Kubernetes deployment using ansible') {
+        steps {
+          sshagent(['ansible']) {
+              sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89'
+              sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 ansible-playbook ansible.yml'
+            }
         }
       }
       
