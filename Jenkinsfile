@@ -1,7 +1,7 @@
 pipeline {
   agent any
-  stages {
     node {
+      stages {
       stage('Git Checkout') {
         steps {
           git 'https://github.com/Ujjwaldotcom/Project-CICD.git'
