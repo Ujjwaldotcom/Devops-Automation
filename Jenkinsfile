@@ -2,14 +2,11 @@ pipeline {
   agent any
   stages {
     node {
-
-      
       stage('Git Checkout') {
         steps {
           git 'https://github.com/Ujjwaldotcom/Project-CICD.git'
         }
       }
-
       stage('Sending Dockerfile to Ansible server over ssh') {
         steps {
           sshagent(['ansible']) {
@@ -18,7 +15,6 @@ pipeline {
           }
         }
       }
-
       stage('Docker Image Building') {
         steps {
           sshagent(['ansible']) {
@@ -27,7 +23,6 @@ pipeline {
           }
         }
       }
-
       stage('Docker Tag Image') {
         steps {
           sshagent(['ansible']) {
@@ -37,7 +32,6 @@ pipeline {
           }
         }
       }
-
       stage('Push Docker Image to DockerHub') {
         steps {
           sshagent(['ansible']) {
@@ -49,7 +43,6 @@ pipeline {
           }
         }
       }
-
       stage('Copy files from Ansible to Kubernetes') {
         steps {
           sshagent(['MyApp(K8s)']) {
@@ -58,7 +51,6 @@ pipeline {
             }
         }
       }
-
       stage('Kubernetes deployment using ansible') {
         steps {
           sshagent(['ansible']) {
@@ -68,7 +60,6 @@ pipeline {
             }
         }
       }
-      
     }
   }
 }
