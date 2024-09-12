@@ -28,7 +28,17 @@ pipeline {
         }
       }
 
+      stage('Docker Tag Image') {
+        steps {
+          sshagent(['ansible']) {
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 cd /home/ubuntu/'
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image tag $JOB_NAME:v1.$BUILD_ID ujjwaljagtiani/$JOB_NAME:v1.$BUILD_I .'
+            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.89 docker image tag $JOB_NAME:v1.$BUILD_ID ujjwaljagtiani/$JOB_NAME:latest '
+          }
+        }
+      }
 
+      
       
     }
   }
