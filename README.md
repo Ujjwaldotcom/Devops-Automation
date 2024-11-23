@@ -1,6 +1,7 @@
 # Introduction
-This project is to make use of Devops tools like Jenkins, Docker, Kubernetes and Ansible. Here 3 AWS EC2 instances are used containing Jenkins, Ansible and Kubernetes in them.
-For,
+The objective of this project is to deploy an application on a Kubernetes cluster using Jenkins CI/CD, integrating tools like GitHub, Ansible, and Docker to automate the build and deployment processes.
+
+Tools used for processes:
 Version Control (GitHub)
 Continuous Integration (Jenkins)
 Configuration Management and Automation (Ansible)
